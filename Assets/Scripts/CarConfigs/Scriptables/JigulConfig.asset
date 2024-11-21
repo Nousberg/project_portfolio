@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58d64f775c40a7a46bb75f7ae1213b47, type: 3}
+  m_Name: JigulConfig
+  m_EditorClassIdentifier: 
+  <Prefab>k__BackingField: {fileID: 9083003301425808477, guid: e2bc2ba653b23944a8301f5f3ed370b9, type: 3}
+  <Icon>k__BackingField: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  <Price>k__BackingField: 3423
+  <Description>k__BackingField: 
+  <MovementType>k__BackingField: 0
+  allowedBodyConfigs:
+  - {fileID: 11400000, guid: 43e179f36766d134d87c0df9cc17062b, type: 2}
+  - {fileID: 11400000, guid: c9be614fc9d82754d91955ca1293bf4e, type: 2}
+  - {fileID: 11400000, guid: f7da653fbb353054da43efa7ed70f26f, type: 2}
+  allowedGearConfigs:
+  - {fileID: 11400000, guid: 613533e3aed40d04ab7858f2ebeb203f, type: 2}
+  - {fileID: 11400000, guid: 062132c6fcf90c0428fbd6c9c201361c, type: 2}
+  allowedEngineConfigs:
+  - {fileID: 11400000, guid: c32b391058b018b4d90402f3265e52c9, type: 2}
+  - {fileID: 11400000, guid: 98ff7233365d22347b106465ddc7a6a8, type: 2}
+  defaultBodies:
+  - {fileID: 11400000, guid: 43e179f36766d134d87c0df9cc17062b, type: 2}
+  - {fileID: 11400000, guid: f7da653fbb353054da43efa7ed70f26f, type: 2}
+  - {fileID: 11400000, guid: c9be614fc9d82754d91955ca1293bf4e, type: 2}
+  defaultEngine: {fileID: 11400000, guid: 98ff7233365d22347b106465ddc7a6a8, type: 2}
+  defaultGear: {fileID: 11400000, guid: 613533e3aed40d04ab7858f2ebeb203f, type: 2}
+  enginePos: {x: 0, y: 0, z: 0}
+  gearsPos:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  carcassPos: {x: 0, y: 0, z: 0}
+  spoilerPos: {x: 0, y: 0, z: 0}
