@@ -51,7 +51,7 @@ namespace Assets.Scripts.CarConfigs
             }
         }
 
-        public void SetColorOfBody(Color c, int bodyIndex)
+        public void SetMaterialOfBody(Material material, int bodyIndex)
         {
             if (bodyIndex < 0 || bodyIndex >= aviableBodys.Count)
                 return;
@@ -60,17 +60,17 @@ namespace Assets.Scripts.CarConfigs
                 switch (aviableBodys[bodyIndex].data.GetBody().bodyType)
                 {
                     case BodyType.Carcass:
-                        aviableCars[aviableBodys[bodyIndex].ownerCarIndex].carcass.color = c;
+                        aviableCars[aviableBodys[bodyIndex].ownerCarIndex].carcass.material = new Material(material);
                         break;
                     case BodyType.Spoiler:
-                        aviableCars[aviableBodys[bodyIndex].ownerCarIndex].spoiler.color = c;
+                        aviableCars[aviableBodys[bodyIndex].ownerCarIndex].spoiler.material = new Material(material);
                         break;
                     case BodyType.Headlights:
-                        aviableCars[aviableBodys[bodyIndex].ownerCarIndex].headlights.color = c;
+                        aviableCars[aviableBodys[bodyIndex].ownerCarIndex].headlights.material = new Material(material);
                         break;
                 }
 
-            aviableBodys[bodyIndex].color = c;
+            aviableBodys[bodyIndex].material = new Material(material);
             OnStorageUpdated?.Invoke();
         }
         public void SetBodyOfCar(int bodyIndex, int carIndex)
@@ -81,6 +81,29 @@ namespace Assets.Scripts.CarConfigs
             if (bodyIndex < 0 || bodyIndex >= aviableBodys.Count)
                 return;
 
+            if (aviableBodys[bodyIndex].ownerCarIndex >= 0 && aviableBodys[bodyIndex].ownerCarIndex < aviableCars.Count)
+                switch (aviableBodys[bodyIndex].data.GetBody().bodyType)
+                {
+                    case BodyType.Carcass:
+                        if (aviableCars[carIndex].carcass == null)
+                            aviableCars[aviableBodys[bodyIndex].ownerCarIndex].carcass = null;
+                        else
+                            aviableCars[aviableBodys[bodyIndex].ownerCarIndex].carcass = aviableCars[carIndex].carcass;
+                        break;
+                    case BodyType.Spoiler:
+                        if (aviableCars[carIndex].spoiler == null)
+                            aviableCars[aviableBodys[bodyIndex].ownerCarIndex].spoiler = null;
+                        else
+                            aviableCars[aviableBodys[bodyIndex].ownerCarIndex].spoiler = aviableCars[carIndex].spoiler;
+                        break;
+                    case BodyType.Headlights:
+                        if (aviableCars[carIndex].headlights == null)
+                            aviableCars[aviableBodys[bodyIndex].ownerCarIndex].headlights = null;
+                        else
+                            aviableCars[aviableBodys[bodyIndex].ownerCarIndex].headlights = aviableCars[carIndex].headlights;
+                        break;
+                }
+
             switch (aviableBodys[bodyIndex].data.GetBody().bodyType)
             {
                 case BodyType.Carcass:
@@ -90,9 +113,11 @@ namespace Assets.Scripts.CarConfigs
                     aviableCars[carIndex].spoiler = aviableBodys[bodyIndex];
                     break;
                 case BodyType.Headlights:
-                    aviableCars[carIndex].spoiler = aviableBodys[bodyIndex];
+                    aviableCars[carIndex].headlights = aviableBodys[bodyIndex];
                     break;
             }
+
+            aviableBodys[bodyIndex].ownerCarIndex = carIndex;
             OnStorageUpdated?.Invoke();
         }
         public void SetEngineOfCar(int engineIndex, int carIndex)

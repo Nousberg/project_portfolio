@@ -10,8 +10,6 @@ namespace Assets.Scripts.CarConfigs.Scriptables
         [Header("References")]
         [SerializeField] private BodyData bodyData;
 
-        public void SetColor(Color color) => bodyData.color = color;
-
         public BodyData GetBody() => bodyData;
     }
 }

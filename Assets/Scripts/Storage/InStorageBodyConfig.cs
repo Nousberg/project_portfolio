@@ -7,12 +7,12 @@ namespace Assets.Scripts.Storage
     {
         public BodyConfigData data = ScriptableObject.CreateInstance<BodyConfigData>();
         public int ownerCarIndex;
-        public Color color;
+        public Material material;
 
         public InStorageBodyConfig(BodyConfigData data, int ownerCarIndex)
         {
             this.data = data;
-            color = data.GetBody().color;
+            material = new Material(data.GetBody().material);
             this.ownerCarIndex = ownerCarIndex;
         }
     }

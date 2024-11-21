@@ -42,13 +42,13 @@ namespace Assets.Scripts.Saving
 
                     new SavedEngine(engine, -1), 
                     new SavedGear(gear, -1), 
-                    new SavedBody(carcass, carcass == "none" ? new SavedColor(Color.black) : new SavedColor(playerCar.carcass.color), -1), 
-                    new SavedBody(spoiler, spoiler == "none" ? new SavedColor(Color.black) : new SavedColor(playerCar.spoiler.color), -1), 
-                    new SavedBody(headlights, headlights == "none" ? new SavedColor(Color.black) : new SavedColor(playerCar.headlights.color), -1))
-                    );
+                    new SavedBody(carcass, carcass == "none" ? new SavedColor(Color.black) : new SavedColor(playerCar.carcass.material.color), -1), 
+                    new SavedBody(spoiler, spoiler == "none" ? new SavedColor(Color.black) : new SavedColor(playerCar.spoiler.material.color), -1), 
+                    new SavedBody(headlights, headlights == "none" ? new SavedColor(Color.black) : new SavedColor(playerCar.headlights.material.color), -1)
+                    ));
             }
             foreach (var body in carsManager.GetAviableBodies())
-                bodies.Add(new SavedBody(body.data.name, new SavedColor(body.color), body.ownerCarIndex));
+                bodies.Add(new SavedBody(body.data.name, new SavedColor(body.material.color), body.ownerCarIndex));
 
             foreach (var engine in carsManager.GetAviableEngines())
                 engines.Add(new SavedEngine(engine.data.name, engine.ownerCarIndex));
@@ -83,24 +83,30 @@ namespace Assets.Scripts.Saving
 
                 if (car.headlights.bodyName != "none")
                 {
-                    addedCar.headlights = new InStorageBodyConfig(carsManager.AllInGameBodys.Find(n => n.name == car.headlights.bodyName && n.GetBody().bodyType == BodyType.Headlights), -1);
-                    addedCar.headlights.color = new Color(car.headlights.bodyColor.r, car.headlights.bodyColor.g, car.headlights.bodyColor.b, car.headlights.bodyColor.a);
+                    BodyConfigData findedBody = carsManager.AllInGameBodys.Find(n => n.name == car.headlights.bodyName && n.GetBody().bodyType == BodyType.Headlights);
+                    addedCar.headlights = new InStorageBodyConfig(findedBody, -1);
+                    addedCar.headlights.material = new Material(findedBody.GetBody().material);
+                    addedCar.headlights.material.color = ColorToUnsaved(car.headlights.bodyColor);
                 }
                 else
                     addedCar.headlights = null;
 
                 if (car.spoiler.bodyName != "none")
                 {
-                    addedCar.spoiler = new InStorageBodyConfig(carsManager.AllInGameBodys.Find(n => n.name == car.spoiler.bodyName && n.GetBody().bodyType == BodyType.Spoiler), -1);
-                    addedCar.spoiler.color = new Color(car.spoiler.bodyColor.r, car.spoiler.bodyColor.g, car.spoiler.bodyColor.b, car.spoiler.bodyColor.a);
+                    BodyConfigData findedBody = carsManager.AllInGameBodys.Find(n => n.name == car.spoiler.bodyName && n.GetBody().bodyType == BodyType.Spoiler);
+                    addedCar.spoiler = new InStorageBodyConfig(findedBody, -1);
+                    addedCar.spoiler.material = new Material(findedBody.GetBody().material);
+                    addedCar.spoiler.material.color = ColorToUnsaved(car.spoiler.bodyColor);
                 }
                 else
                     addedCar.spoiler = null;
 
                 if (car.carcass.bodyName != "none")
                 {
-                    addedCar.carcass = new InStorageBodyConfig(carsManager.AllInGameBodys.Find(n => n.name == car.carcass.bodyName && n.GetBody().bodyType == BodyType.Carcass), -1);
-                    addedCar.carcass.color = new Color(car.carcass.bodyColor.r, car.carcass.bodyColor.g, car.carcass.bodyColor.b, car.carcass.bodyColor.a);
+                    BodyConfigData findedBody = carsManager.AllInGameBodys.Find(n => n.name == car.carcass.bodyName && n.GetBody().bodyType == BodyType.Carcass);
+                    addedCar.carcass = new InStorageBodyConfig(findedBody, -1);
+                    addedCar.carcass.material = new Material(findedBody.GetBody().material);
+                    addedCar.carcass.material.color = ColorToUnsaved(car.carcass.bodyColor);
                 }
                 else
                     addedCar.carcass = null;
@@ -117,6 +123,11 @@ namespace Assets.Scripts.Saving
                 bodys.Add(new InStorageBodyConfig(carsManager.AllInGameBodys.Find(n => n.name == body.bodyName), -1));
 
             return new LoadedShopData(cars, engines, gears, bodys, data.coins);
+        }
+
+        private Color ColorToUnsaved(SavedColor color)
+        {
+            return new Color(color.r, color.g, color.b, color.a);
         }
     }
 }

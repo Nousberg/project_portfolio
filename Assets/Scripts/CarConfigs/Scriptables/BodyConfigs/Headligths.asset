@@ -18,5 +18,4 @@ MonoBehaviour:
   <Description>k__BackingField: 
   bodyData:
     bodyType: 1
-    color: {r: 0, g: 0, b: 0, a: 1}
-    material: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+    material: {fileID: 2100000, guid: 21356e1d00ae6b94eaad931a0e5b8479, type: 2}

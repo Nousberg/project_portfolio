@@ -8,7 +8,6 @@ namespace Assets.Scripts.CarConfig
     public class BodyData
     {
         public BodyType bodyType;
-        public Color color = Color.black;
         public Material material;
     }
 }

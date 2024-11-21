@@ -59,9 +59,6 @@ namespace Assets.Scripts.Shop
         private int selectedGears;
         private int currentCarIndex;
         private int equippedCarIndex;
-        private bool interactedBodysMenu;
-        private bool interactedEnginesMenu;
-        private bool interactedGearsMenu;
 
         private void Start()
         {
@@ -108,6 +105,7 @@ namespace Assets.Scripts.Shop
             List<TMP_Dropdown.OptionData> engines = new List<TMP_Dropdown.OptionData>();
             List<TMP_Dropdown.OptionData> gears = new List<TMP_Dropdown.OptionData>();
 
+            selectableBodys.Clear();
             selectableEngines.Clear();
             selectableGears.Clear();
 
@@ -130,16 +128,13 @@ namespace Assets.Scripts.Shop
                     selectableGears.Add(gear);
                 }
 
+            bodys.Insert(0, new TMP_Dropdown.OptionData("Не выбрано"));
+            gears.Insert(0, new TMP_Dropdown.OptionData("Не выбрано"));
+            engines.Insert(0, new TMP_Dropdown.OptionData("Не выбрано"));
+
             aviableCarEngines.options = engines;
             aviableCarGears.options = gears;
             aviableCarBodys.options = bodys;
-            aviableCarBodys.value = -1;
-            aviableCarGears.value = -1;
-            aviableCarEngines.value = -1;
-
-            aviableCarEngines.RefreshShownValue();
-            aviableCarBodys.RefreshShownValue();
-            aviableCarGears.RefreshShownValue();
 
             currentCarNameText.text = carsManager.GetAviableCars()[currentCarIndex].data.name;
         }
@@ -155,8 +150,7 @@ namespace Assets.Scripts.Shop
                 currentShowedCarcass = Instantiate(carsManager.GetAviableCars()[carIndex].carcass.data.Prefab, carPrefabPosition);
 
                 Renderer carcassRenderer = currentShowedCarcass.GetComponent<Renderer>();
-                carcassRenderer.material = carcass.material;
-                carcassRenderer.material.color = carcass.color;
+                carcassRenderer.material = new Material(carsManager.GetAviableCars()[carIndex].carcass.material);
 
                 currentShowedCarcass.transform.localPosition = carsManager.GetAviableCars()[carIndex].data.GetCarcassPos();
             }
@@ -167,8 +161,7 @@ namespace Assets.Scripts.Shop
                 currentShowedSpoiler = Instantiate(carsManager.GetAviableCars()[carIndex].spoiler.data.Prefab, carPrefabPosition);
 
                 Renderer spoilerRenderer = currentShowedSpoiler.GetComponent<Renderer>();
-                spoilerRenderer.material = spoiler.material;
-                spoilerRenderer.material.color = spoiler.color;
+                spoilerRenderer.material = new Material(carsManager.GetAviableCars()[carIndex].spoiler.material);
 
                 currentShowedSpoiler.transform.localPosition = carsManager.GetAviableCars()[carIndex].data.GetSpoilerPos();
             }
@@ -191,44 +184,39 @@ namespace Assets.Scripts.Shop
             if (selectedBody < 0 || selectedBody >= selectableBodys.Count)
                 return;
 
-            carsManager.SetColorOfBody(screen.GetPixel(), carsManager.GetAviableBodies().IndexOf(selectableBodys[selectedBody]));
+            Material targetMaterial = new Material(selectableBodys[selectedBody].material);
+            targetMaterial.color = screen.GetPixel();
+            carsManager.SetMaterialOfBody(targetMaterial, carsManager.GetAviableBodies().IndexOf(selectableBodys[selectedBody]));
         }
         public void SetCarBody(int indexOfBody)
         {
-            if (indexOfBody < 0 || indexOfBody >= selectableBodys.Count)
+            if (indexOfBody < 1 || indexOfBody >= selectableBodys.Count)
                 return;
 
-            selectedBody = indexOfBody;
-            interactedBodysMenu = true;
+            selectedBody = indexOfBody - 1;
         }
         public void SetCarEngine(int indexOfEngine)
         {
-            if (indexOfEngine < 0 || indexOfEngine >= selectableEngines.Count)
+            if (indexOfEngine < 1 || indexOfEngine >= selectableEngines.Count)
                 return;
         
-            selectedEngine = indexOfEngine;
-            interactedEnginesMenu = true;
+            selectedEngine = indexOfEngine - 1;
         }
         public void SetCarGear(int indexOfGear)
         {
-            if (indexOfGear < 0 || indexOfGear >= selectableGears.Count)
+            if (indexOfGear < 1 || indexOfGear >= selectableGears.Count)
                 return;
 
-            selectedGears = indexOfGear;
-            interactedGearsMenu = true;
+            selectedGears = indexOfGear - 1;
         }
         public void ApplyСarPartsChange()
         {
-            if (interactedBodysMenu)
+            if (selectedBody > -1 && selectedBody < selectableBodys.Count)
                 carsManager.SetBodyOfCar(carsManager.GetAviableBodies().IndexOf(selectableBodys[selectedBody]), currentCarIndex);
-            if (interactedEnginesMenu)
+            if (selectedEngine > -1 && selectedEngine < selectableEngines.Count)
                 carsManager.SetEngineOfCar(carsManager.GetAviableEngines().IndexOf(selectableEngines[selectedEngine]), currentCarIndex);
-            if (interactedGearsMenu)
+            if (selectedGears > -1 && selectedGears < selectableGears.Count)
                 carsManager.SetGearsOfCar(carsManager.GetAviableGears().IndexOf(selectableGears[selectedGears]), currentCarIndex);
-
-            interactedBodysMenu = false;
-            interactedEnginesMenu = false;
-            interactedGearsMenu = false;
 
             SetCurrentCar(equippedCarIndex);
         }
