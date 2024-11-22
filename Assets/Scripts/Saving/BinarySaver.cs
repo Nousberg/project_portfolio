@@ -1,5 +1,4 @@
 ﻿using System.Runtime.Serialization.Formatters.Binary;
-using UnityEngine;
 using System.IO;
 
 namespace Assets.Scripts
@@ -18,7 +17,13 @@ namespace Assets.Scripts
                 BinaryFormatter formatter = new BinaryFormatter();
                 using (FileStream stream = new FileStream(savePath + saveName + ".bin", FileMode.Create))
                 {
-                    formatter.Serialize(stream, data);
+                    try
+                    {
+                        formatter.Serialize(stream, data);
+                    }
+                    catch
+                    {
+                    }
                 }
             }
         }
